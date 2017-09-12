@@ -1,13 +1,16 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react'
+import ReactDOM from 'react-dom'
+import GetRequest from "./axiosGetRequest"
 
-var Content = React.createClass({
-                                    render: function() {
-                                        return (
-                                            <div>
-                                                here i am
-                                            </div>
-                                        );
-                                    }
-                                });
+
+export default class Content extends  React.Component{
+
+    render() {
+        return (
+        <GetRequest  url={"https://a84gsofkhk.execute-api.ap-southeast-2.amazonaws.com/develop/cloudwatch"}/>
+        )
+
+    }
+}
+
 ReactDOM.render(<Content />, document.getElementById('content'));
