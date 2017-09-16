@@ -1,6 +1,7 @@
 import React from "react"
 import Axios from "axios"
 import {AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios} from 'react-axios'
+import {Chart}  from 'react-google-charts';
 
 export default class AxiosGetRequest extends React.Component {
 
@@ -9,7 +10,7 @@ export default class AxiosGetRequest extends React.Component {
         this.axiosInstance = Axios.create({
                                               baseURL: props.url,
                                               timeout: 2000,
-                                              headers: {'Accept': 'application/json'}
+                                              headers: {'Accept': 'application/json','Authorization':'allow993874657'}
                                           });
     }
 
@@ -27,15 +28,27 @@ export default class AxiosGetRequest extends React.Component {
                         else if (response !== null) {
                             var i = 1;
                             var data = JSON.parse(response.data);
-                            var list = data.Datapoints.map((datapoint) => {
-                                return <div key={i++}>Timestamp : {datapoint.Timestamp} Maximum: {datapoint.Maximum}
-                                     Unit: {datapoint.Unit}</div>;
+                            /*                            var list = data.Datapoints.map((datapoint) => {
+                                                            return <ListGroupItem>Timestamp : {datapoint.Timestamp} Maximum: {datapoint.Maximum}
+                                                                Unit: {datapoint.Unit}</ListGroupItem>;
+                                                        });*/
+
+                            var chartData  = [['Timestamp', 'Maximum']];
+                            data.Datapoints.map((datapoint) => {
+                                chartData.push([datapoint.Timestamp, datapoint.Maximum]);
                             });
 
-                            return (<div>
-                                <div>{data.Label}</div>
-                                <div>{list}</div>
-                            </div>)
+                            return (
+                                <div className={'my-pretty-chart-container'}>
+                                    <Chart
+                                chartType="ScatterChart"
+                                data={chartData}
+                                options={{}}
+                                graph_id="ScatterChart"
+                                width="100%"
+                                height="400px"
+                                legend_toggle
+                                    /></div>)
                         }
                         return (<div>Default message before request is made.</div>)
                     }}
